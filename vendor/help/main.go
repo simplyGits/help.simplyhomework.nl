@@ -1,6 +1,7 @@
 package help
 
 import (
+	"html/template"
 	"io/ioutil"
 	"os"
 	"path"
@@ -19,9 +20,9 @@ type infoBlock struct {
 
 // Item relates to a file in the help/ folder
 type Item struct {
-	Name         string
+	Title        string
 	Content      string
-	HTMLContent  string
+	HTMLContent  template.HTML
 	Path         string
 	Author       string
 	CreationDate time.Time
@@ -88,14 +89,14 @@ func fileToItems(f file) ([]Item, error) {
 		body := strings.TrimSpace(splitted[2])
 
 		resItem = &Item{
-			Name: path.Base(f.Path),
-			Path: f.Path,
+			Title: path.Base(f.Path),
+			Path:  f.Path,
 		}
-		resItem.Name = infoBlock.Title
+		resItem.Title = infoBlock.Title
 		resItem.CreationDate = infoBlock.Date
 		resItem.Author = infoBlock.Author
 		resItem.Content = body
-		resItem.HTMLContent = string(blackfriday.MarkdownCommon([]byte(body)))
+		resItem.HTMLContent = template.HTML(blackfriday.MarkdownCommon([]byte(body)))
 	}
 
 	if resItem != nil {

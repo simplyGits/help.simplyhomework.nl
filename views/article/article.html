@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+	<head>
+		<title>simplyHomework Help | {{.Title}}</title>
+		<link href="/article.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<article>
+			<section>
+				<h1 id="title">{{.Title}}</h1>
+				<div class="metadata">
+					<span class="dim">Door</span> <address class="author">{{.Author}}</address>
+					<span class="dim">op</span> <time pubdate datetime="{{.CreationDate.Format "2006-01-02"}}">{{.CreationDate.Format "2006-01-02"}}</time>
+				</div>
+			</section>
+			<section>
+				{{.HTMLContent}}
+			</section>
+		</article>
+	</body>
+</html>
