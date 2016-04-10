@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/russross/blackfriday"
 )
 
 type infoBlock struct {
@@ -19,6 +21,7 @@ type infoBlock struct {
 type Item struct {
 	Name         string
 	Content      string
+	HTMLContent  string
 	Path         string
 	Author       string
 	CreationDate time.Time
@@ -80,17 +83,19 @@ func fileToItems(f file) ([]Item, error) {
 		}
 
 		splitted := infoBlockRegexp.Split(string(content), 3)
+
 		infoBlock := parseInfoBlock(splitted[1])
+		body := strings.TrimSpace(splitted[2])
 
 		resItem = &Item{
 			Name: path.Base(f.Path),
 			Path: f.Path,
 		}
-
 		resItem.Name = infoBlock.Title
 		resItem.CreationDate = infoBlock.Date
 		resItem.Author = infoBlock.Author
-		resItem.Content = strings.TrimSpace(splitted[2])
+		resItem.Content = body
+		resItem.HTMLContent = string(blackfriday.MarkdownCommon([]byte(body)))
 	}
 
 	if resItem != nil {

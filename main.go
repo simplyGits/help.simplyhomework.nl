@@ -11,9 +11,10 @@ import (
 var items, _ = help.LoadItems("help")
 
 func mainPage(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, "<!doctype html>")
 	for _, item := range items {
 		if item.Name != "" {
-			io.WriteString(w, fmt.Sprintf("%s\n---------\n\n%s", item.Name, item.Content))
+			io.WriteString(w, fmt.Sprintf("<h1>%s by %s</h1><hr>%s<br><br>", item.Name, item.Author, item.HTMLContent))
 		}
 	}
 }
