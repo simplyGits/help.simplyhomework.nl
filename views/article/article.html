@@ -10,7 +10,9 @@
 			<section>
 				<h1 id="title">{{.Title}}</h1>
 				<div class="metadata">
-					<span class="dim">Door</span> <address class="author">{{.Author}}</address>
+					{{with .Author}}
+						<span class="dim">Door</span> <address class="author">{{.}}</address>
+					{{end}}
 					<span class="dim">op</span> <time pubdate datetime="{{.CreationDate.Format "2006-01-02"}}">{{.CreationDate.Format "2006-01-02"}}</time>
 				</div>
 			</section>
