@@ -59,7 +59,7 @@ func parseInfoBlock(s string) infoBlock {
 
 func fileToItems(f file) ([]Item, error) {
 	var resItem *Item
-	res := make([]Item, len(f.Files)+1)
+	var res []Item
 
 	if f.IsDir {
 		for _, file := range f.Files {
@@ -107,7 +107,7 @@ func fileToItems(f file) ([]Item, error) {
 
 // LoadItems returns all the help items available
 func LoadItems(dir string) ([]Item, error) {
-	res := make([]Item, 10)
+	var res []Item
 
 	file, err := readDirRecursive(dir)
 	if err != nil {
