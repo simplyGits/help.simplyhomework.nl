@@ -54,6 +54,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("loaded %d help items\n", len(items))
 
 	articleTmpl, err = template.ParseFiles("views/article/article.html")
 	if err != nil {
@@ -61,5 +62,6 @@ func main() {
 	}
 
 	http.HandleFunc("/", mainPage)
+	log.Println("listening on :80")
 	log.Fatal(http.ListenAndServe(":80", nil))
 }
