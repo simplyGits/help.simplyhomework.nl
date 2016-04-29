@@ -16,6 +16,7 @@ type infoBlock struct {
 	Title  string
 	Author string
 	Date   time.Time
+	Tags   []string
 }
 
 // Item relates to a file in the help/ folder
@@ -25,6 +26,7 @@ type Item struct {
 	HTMLContent  template.HTML
 	Path         string
 	Author       string
+	Tags         []string
 	CreationDate time.Time
 }
 
@@ -50,6 +52,11 @@ func parseInfoBlock(s string) infoBlock {
 			date, err := time.ParseInLocation("2006-01-02", val, loc)
 			if err == nil {
 				res.Date = date
+			}
+		case "tags":
+			tags := strings.Split(val, ",")
+			for _, tag := range tags {
+				res.Tags = append(res.Tags, strings.TrimSpace(tag))
 			}
 		}
 	}
@@ -95,6 +102,7 @@ func fileToItems(f file) ([]Item, error) {
 		resItem.Title = infoBlock.Title
 		resItem.CreationDate = infoBlock.Date
 		resItem.Author = infoBlock.Author
+		resItem.Tags = infoBlock.Tags
 		resItem.Content = body
 		resItem.HTMLContent = template.HTML(blackfriday.MarkdownCommon([]byte(body)))
 	}
