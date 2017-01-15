@@ -6,6 +6,49 @@ body {
 	margin-right: auto;
 }
 
+#metadata {
+	opacity: .7;
+}
+#metadata > .section {
+	display: inline-block;
+	margin-right: 2px;
+	padding-right: 5px;
+}
+#metadata > .section:not(:last-child) {
+	border-right: 1px #E4E4E4 solid;
+}
+
+/*
+#metadata {
+	float: left;
+
+	margin-top: -15px;
+	margin-left: -275px;
+
+	padding: 10px;
+	width: 150px;
+	height: 200px;
+
+	border: 1px gray solid;
+
+	opacity: .6;
+}
+#metadata > .row {
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+}
+#metadata > .row:not(:last-child) {
+	border-bottom: 1px black solid;
+}
+#metadata > .row > div:first-child {
+	display: inline;
+	opacity: .5;
+}
+#metadata > .row > div:last-child {
+	display: inline;
+}
+*/
+
 #title {
 	font-size: 2em;
 	border-bottom: 1px black solid;
@@ -19,6 +62,13 @@ address {
 	font-style: normal;
 }
 
-.dim {
-	opacity: .5;
+#metadata ul {
+	margin: 0;
+	padding: 0;
+}
+#metadata ul li {
+	display: inline;
+}
+#metadata ul li:not(:last-child):after {
+	content: ", ";
 }

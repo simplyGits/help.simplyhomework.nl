@@ -9,13 +9,30 @@
 		<article>
 			<section>
 				<h1 id="title">{{.Title}}</h1>
-				<div class="metadata">
-					{{with .Author}}
-						<span class="dim">Door</span> <address class="author">{{.}}</address>
-					{{end}}
-					<span class="dim">op</span> <time pubdate datetime="{{.CreationDate.Format "2006-01-02"}}">{{.CreationDate.Format "2006-01-02"}}</time>
-				</div>
 			</section>
+
+			<section id="metadata">
+				{{with .Author}}
+					<div class="section">
+						<address class="author">{{.}}</address>
+					</div>
+				{{end}}
+				{{with .CreationDate}}
+					<div class="section">
+						<time pubdate datetime="{{.Format "2006-01-02"}}">{{.Format "2006-01-02"}}</time>
+					</div>
+				{{end}}
+				{{with .Tags}}
+					<div class="section">
+						<ul>
+							{{range .}}
+								<li>{{.}}</li>
+							{{end}}
+						</ul>
+					</div>
+				{{end}}
+			</section>
+
 			<section>
 				{{.HTMLContent}}
 			</section>
