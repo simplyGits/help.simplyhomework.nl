@@ -1,6 +1,7 @@
 package help
 
 import (
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"os"
@@ -79,6 +80,7 @@ func filesToItems(files []file) ([]Item, error) {
 		}
 
 		splitted := infoBlockRegexp.Split(string(content), 3)
+		fmt.Printf("%#v\n", splitted)
 
 		infoBlock := parseInfoBlock(splitted[1])
 		body := strings.TrimSpace(splitted[2])

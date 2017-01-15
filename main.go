@@ -1,12 +1,13 @@
 package main
 
 import (
-	"help"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
 	"path"
+
+	"help.simplyhomework.nl/help"
 )
 
 var items []help.Item
