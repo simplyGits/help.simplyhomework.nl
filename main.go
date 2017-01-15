@@ -50,7 +50,7 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	var err error
-	items, err = help.LoadItems("help")
+	items, err = help.LoadItems("entries")
 	if err != nil {
 		log.Fatal(err)
 	}
