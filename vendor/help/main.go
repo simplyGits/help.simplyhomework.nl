@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"io/ioutil"
 	"os"
-	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -64,28 +63,17 @@ func parseInfoBlock(s string) infoBlock {
 	return res
 }
 
-func fileToItems(f file) ([]Item, error) {
-	var resItem *Item
+func filesToItems(files []file) ([]Item, error) {
 	var res []Item
 
-	if f.IsDir {
-		for _, file := range f.Files {
-			items, err := fileToItems(file)
-			if err != nil {
-				return res, err
-			}
-			for _, item := range items {
-				res = append(res, item)
-			}
-		}
-	} else {
+	for _, f := range files {
 		file, err := os.Open(f.Path)
 		if err != nil {
 			return res, err
 		}
-		defer file.Close()
 
 		content, err := ioutil.ReadAll(file)
+		file.Close()
 		if err != nil {
 			return res, err
 		}
@@ -95,32 +83,27 @@ func fileToItems(f file) ([]Item, error) {
 		infoBlock := parseInfoBlock(splitted[1])
 		body := strings.TrimSpace(splitted[2])
 
-		resItem = &Item{
-			Title: path.Base(f.Path),
-			Path:  f.Path,
+		item := Item{
+			Title:        infoBlock.Title,
+			Path:         f.Path,
+			CreationDate: infoBlock.Date,
+			Author:       infoBlock.Author,
+			Tags:         infoBlock.Tags,
+			Content:      body,
+			HTMLContent:  template.HTML(blackfriday.MarkdownCommon([]byte(body))),
 		}
-		resItem.Title = infoBlock.Title
-		resItem.CreationDate = infoBlock.Date
-		resItem.Author = infoBlock.Author
-		resItem.Tags = infoBlock.Tags
-		resItem.Content = body
-		resItem.HTMLContent = template.HTML(blackfriday.MarkdownCommon([]byte(body)))
+
+		res = append(res, item)
 	}
 
-	if resItem != nil {
-		res = append(res, *resItem)
-	}
 	return res, nil
 }
 
-// LoadItems returns all the help items available
+// LoadItems returns all the help items available in the given dir
 func LoadItems(dir string) ([]Item, error) {
-	var res []Item
-
-	file, err := readDirRecursive(dir)
+	files, err := readDirRecursive(dir)
 	if err != nil {
-		return res, err
+		return make([]Item, 0), err
 	}
-
-	return fileToItems(file)
+	return filesToItems(files)
 }

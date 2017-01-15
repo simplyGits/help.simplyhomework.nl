@@ -1,44 +1,28 @@
 package help
 
 import (
-	"io/ioutil"
-	"path"
+	"os"
+	"path/filepath"
 )
 
 type file struct {
-	Path  string
-	IsDir bool
-	Files []file
+	Path string
 }
 
 // readDirRecursive reads the given `dir` recursively
-func readDirRecursive(dir string) (file, error) {
-	res := file{
-		Path:  dir + "/",
-		IsDir: true,
-	}
+func readDirRecursive(dir string) ([]file, error) {
+	var res []file
 
-	infos, err := ioutil.ReadDir(dir)
-	if err != nil {
-		return res, err
-	}
-
-	for _, info := range infos {
-		f := file{
-			Path: path.Join(dir, info.Name()),
-		}
-
-		if info.IsDir() {
-			f, err = readDirRecursive(f.Path)
-			if err != nil {
-				return f, err
+	f := func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			f := file{
+				Path: path,
 			}
-		} else {
-			f.IsDir = false
+			res = append(res, f)
 		}
 
-		res.Files = append(res.Files, f)
+		return nil
 	}
 
-	return res, nil
+	return res, filepath.Walk(dir, f)
 }
