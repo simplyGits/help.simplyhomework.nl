@@ -1,4 +1,4 @@
 package: help.simplyhomework.nl
 import:
-- package: help
 - package: github.com/russross/blackfriday
+  version: ^1.4.0
